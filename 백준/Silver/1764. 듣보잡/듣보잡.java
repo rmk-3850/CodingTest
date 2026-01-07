@@ -1,5 +1,6 @@
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -21,27 +22,35 @@ public class Main {
 			int M=Integer.parseInt(input[1]);
 			int size=M>N ? N : M;
 			
-			Set<String> notHeard=new HashSet<String>(N);
-			Set<String> notSaw=new HashSet<String>(M);
+			String[] notHeard=new String[N];
+			String[] notSaw=new String[M];
 			
-			while(N-->0) notHeard.add(br.readLine());
-			while(M-->0) notSaw.add(br.readLine());
+			for(int i=0;i<N;i++) notHeard[i]=br.readLine();
+			for(int i=0;i<M;i++) notSaw[i]=br.readLine();
 			
+			Arrays.sort(notHeard);
+			Arrays.sort(notSaw);
 			
-			Set<String> notHeardAndSaw=new HashSet<String>(size);
+			int x=0;
+			int y=0;
+			List<String> notHeardAndSaw=new ArrayList<String>();
 			
-			for(String s:notHeard) {
-				if(notSaw.contains(s)) notHeardAndSaw.add(s);
+			while(x<N && y<M) {
+				if(notHeard[x].equals(notSaw[y])) {
+					notHeardAndSaw.add(notHeard[x]);
+					x++;
+					y++;
+				}else if(notHeard[x].compareTo(notSaw[y])<0) x++; 
+				else y++;
 			}
 			
-			List<String> list=new ArrayList<String>(notHeardAndSaw);
 			
-			list.sort(Comparator.naturalOrder());
+			notHeardAndSaw.sort(Comparator.naturalOrder());
 			
 			StringBuilder sb=new StringBuilder();
-			sb.append(list.size());
-			for(int i=0;i<list.size();i++) {
-				sb.append(System.lineSeparator()).append(list.get(i));
+			sb.append(notHeardAndSaw.size());
+			for(int i=0;i<notHeardAndSaw.size();i++) {
+				sb.append(System.lineSeparator()).append(notHeardAndSaw.get(i));
 			}
 			bw.write(sb.toString());
 		} catch (Exception e) {
